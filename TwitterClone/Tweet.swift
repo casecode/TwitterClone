@@ -29,6 +29,7 @@ class Tweet {
                 }
             }
             
+            tweets.sort { $0.text < $1.text }
             return tweets
         }
         // else
