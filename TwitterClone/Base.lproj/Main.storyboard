@@ -17,16 +17,44 @@
                         <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="44" sectionHeaderHeight="22" sectionFooterHeight="22" translatesAutoresizingMaskIntoConstraints="NO" id="cW8-fx-KDd">
+                            <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="119" sectionHeaderHeight="22" sectionFooterHeight="22" translatesAutoresizingMaskIntoConstraints="NO" id="cW8-fx-KDd">
                                 <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                 <prototypes>
-                                    <tableViewCell contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="TWEET_CELL" id="HXF-os-ndd">
+                                    <tableViewCell contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="TWEET_CELL" rowHeight="119" id="HXF-os-ndd" customClass="TweetCell" customModule="TwitterClone" customModuleProvider="target">
                                         <rect key="frame" x="0.0" y="0.0" width="600" height="44"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="HXF-os-ndd" id="hjn-rL-X46">
                                             <autoresizingMask key="autoresizingMask"/>
+                                            <subviews>
+                                                <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="hFo-zE-Qgj">
+                                                    <rect key="frame" x="118" y="18" width="454" height="82"/>
+                                                    <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                                    <string key="text">Lorem ipsum dolor sit er elit lamet, consectetaur cillium adipisicing pecu, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum. Nam liber te conscient to factor tum poen legum odioque civiuda.</string>
+                                                    <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                                                    <textInputTraits key="textInputTraits" autocapitalizationType="sentences"/>
+                                                </textView>
+                                                <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="zmC-1t-P0F">
+                                                    <rect key="frame" x="8" y="8" width="100" height="100"/>
+                                                    <constraints>
+                                                        <constraint firstAttribute="width" constant="100" id="Nv2-oQ-GE4"/>
+                                                        <constraint firstAttribute="height" constant="100" id="z1e-7S-aGQ"/>
+                                                    </constraints>
+                                                </imageView>
+                                            </subviews>
+                                            <constraints>
+                                                <constraint firstItem="zmC-1t-P0F" firstAttribute="leading" secondItem="hjn-rL-X46" secondAttribute="leadingMargin" id="3ac-HA-M9h"/>
+                                                <constraint firstAttribute="trailingMargin" secondItem="hFo-zE-Qgj" secondAttribute="trailing" constant="20" id="THx-ND-kRc"/>
+                                                <constraint firstItem="zmC-1t-P0F" firstAttribute="top" secondItem="hjn-rL-X46" secondAttribute="topMargin" id="ggA-DE-Cvf"/>
+                                                <constraint firstItem="hFo-zE-Qgj" firstAttribute="top" secondItem="hjn-rL-X46" secondAttribute="topMargin" constant="10" id="rMf-rD-MZG"/>
+                                                <constraint firstAttribute="bottomMargin" secondItem="hFo-zE-Qgj" secondAttribute="bottom" constant="10" id="uvj-3v-Om3"/>
+                                                <constraint firstItem="hFo-zE-Qgj" firstAttribute="leading" secondItem="zmC-1t-P0F" secondAttribute="trailing" constant="10" id="xG5-TZ-AYo"/>
+                                            </constraints>
                                         </tableViewCellContentView>
+                                        <connections>
+                                            <outlet property="tweet" destination="hFo-zE-Qgj" id="qQg-V6-Jrg"/>
+                                            <outlet property="userProfile" destination="zmC-1t-P0F" id="pFw-Ac-wZR"/>
+                                        </connections>
                                     </tableViewCell>
                                 </prototypes>
                                 <connections>
@@ -48,7 +76,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="XnF-7x-eS3" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="178" y="178"/>
+            <point key="canvasLocation" x="178" y="163"/>
         </scene>
     </scenes>
 </document>
