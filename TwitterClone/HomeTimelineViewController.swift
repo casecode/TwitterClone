@@ -8,10 +8,11 @@
 
 import UIKit
 
-class HomeTimelineViewController: UITableViewController {
+class HomeTimelineViewController: UIViewController, UITableViewDataSource {
     
     var tweets : [Tweet]?
-
+    @IBOutlet weak var tableView: UITableView!
+    
     override func viewDidLoad() {
         super.viewDidLoad()
 
@@ -26,7 +27,7 @@ class HomeTimelineViewController: UITableViewController {
         super.didReceiveMemoryWarning()
     }
     
-    override func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+    func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         if let tweets = self.tweets {
             return tweets.count
         } else {
@@ -34,7 +35,7 @@ class HomeTimelineViewController: UITableViewController {
         }
     }
     
-    override func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
+    func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCellWithIdentifier("TWEET_CELL") as UITableViewCell
         let tweet = self.tweets?[indexPath.row]
         cell.textLabel?.text = tweet?.text
