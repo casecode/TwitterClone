@@ -22,7 +22,45 @@ class HomeTimelineViewController: UIViewController, UITableViewDataSource {
         super.viewDidLoad()
         
         // Load tweets using Twitter API
+        loadHomeTimeline()
         
+//        // Code for loading data from tweets.json file
+//        if let path = NSBundle.mainBundle().pathForResource("tweets", ofType: "json") {
+//            var error : NSError?
+//            let jsonData = NSData(contentsOfFile: path)
+//            self.tweets = Tweet.parseJSONDataIntoTweets(jsonData!)
+//        }
+    }
+
+    override func didReceiveMemoryWarning() {
+        super.didReceiveMemoryWarning()
+    }
+    
+    func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+        if let tweets = self.tweets {
+            return tweets.count
+        } else {
+            return 0
+        }
+    }
+    
+    func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
+        let cell = tableView.dequeueReusableCellWithIdentifier("TWEET_CELL") as TweetCell
+        let tweet = self.tweets?[indexPath.row]
+        // configure the cell's text
+        configureTweetCell(cell, withTweet: tweet)
+        
+        return cell
+    }
+    
+    // Configure cell's image and text
+    func configureTweetCell(cell: TweetCell, withTweet tweet: Tweet?) {
+        cell.tweet.text = tweet?.text
+        cell.userProfile.image = tweet?.userProfileImage!
+    }
+    
+    func loadHomeTimeline() {
+        // Grab Twitter Accounts
         let accountStore = ACAccountStore()
         let accountType = accountStore.accountTypeWithAccountTypeIdentifier(ACAccountTypeIdentifierTwitter)
         
@@ -62,40 +100,6 @@ class HomeTimelineViewController: UIViewController, UITableViewDataSource {
                 })
             }
         }
-        
-//        // Code for loading data from tweets.json file
-//        if let path = NSBundle.mainBundle().pathForResource("tweets", ofType: "json") {
-//            var error : NSError?
-//            let jsonData = NSData(contentsOfFile: path)
-//            self.tweets = Tweet.parseJSONDataIntoTweets(jsonData!)
-//        }
-    }
-
-    override func didReceiveMemoryWarning() {
-        super.didReceiveMemoryWarning()
-    }
-    
-    func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        if let tweets = self.tweets {
-            return tweets.count
-        } else {
-            return 0
-        }
-    }
-    
-    func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
-        let cell = tableView.dequeueReusableCellWithIdentifier("TWEET_CELL") as TweetCell
-        let tweet = self.tweets?[indexPath.row]
-        // configure the cell's text
-        configureTweetCell(cell, withTweet: tweet)
-        
-        return cell
-    }
-    
-    // Configure cell's image and text
-    func configureTweetCell(cell: TweetCell, withTweet tweet: Tweet?) {
-        cell.tweet.text = tweet?.text
-        cell.userProfile.image = tweet?.userProfileImage!
     }
 
 }
