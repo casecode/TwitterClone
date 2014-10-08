@@ -17,23 +17,35 @@ class HomeTimelineViewController: UIViewController, UITableViewDataSource {
     
     var tweets : [Tweet]?
     var twitterAccount: ACAccount?
+    var twitterService: TwitterService!
     
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        // Load tweets using Twitter API
-        loadHomeTimeline()
-        
-//        // Code for loading data from tweets.json file
-//        if let path = NSBundle.mainBundle().pathForResource("tweets", ofType: "json") {
-//            var error : NSError?
-//            let jsonData = NSData(contentsOfFile: path)
-//            self.tweets = Tweet.parseJSONDataIntoTweets(jsonData!)
-//        }
+        // Set TwitterService Singleton
+        let appDelegate = UIApplication.sharedApplication().delegate as AppDelegate
+        self.twitterService = appDelegate.twitterService
+        // Fetch Tweets from user timeline
+        fetchHomeTimeline()
     }
 
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
+    }
+    
+    func fetchHomeTimeline() {
+        self.twitterService.fetchHomeTimeline { (errorMessage, tweets) -> () in
+            if let error = errorMessage {
+                println(error)
+            } else {
+                println("\(tweets!.count) tweets fetched successfully")
+                // Populate tweets and refresh tableView on main thread
+                self.tweets = tweets!
+                NSOperationQueue.mainQueue().addOperationWithBlock({ () -> Void in
+                    self.tableView.reloadData()
+                })
+            }
+        }
     }
     
     func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
@@ -57,49 +69,6 @@ class HomeTimelineViewController: UIViewController, UITableViewDataSource {
     func configureTweetCell(cell: TweetCell, withTweet tweet: Tweet?) {
         cell.tweet.text = tweet?.text
         cell.userProfile.image = tweet?.userProfileImage!
-    }
-    
-    func loadHomeTimeline() {
-        // Grab Twitter Accounts
-        let accountStore = ACAccountStore()
-        let accountType = accountStore.accountTypeWithAccountTypeIdentifier(ACAccountTypeIdentifierTwitter)
-        
-        // Request Twitter Account access from user
-        accountStore.requestAccessToAccountsWithType(accountType, options: nil) { (granted, error) -> Void in
-            // if user grants access
-            if granted {
-                // set twitterAccount to user's first Twitter Account
-                let accounts = accountStore.accountsWithAccountType(accountType)
-                self.twitterAccount = accounts.first as ACAccount?
-                
-                // Set up Twitter GET request
-                let targetURL = "https://api.twitter.com/1.1/statuses/home_timeline.json"
-                let url = NSURL(string: targetURL)
-                let twitterRequest = SLRequest(forServiceType: SLServiceTypeTwitter, requestMethod: SLRequestMethod.GET, URL: url, parameters: nil)
-                // Attach account to request
-                twitterRequest.account = self.twitterAccount
-                
-                // Send http request
-                twitterRequest.performRequestWithHandler({ (data, response, error) -> Void in
-                    // handle http response
-                    switch response.statusCode {
-                    case 200...299:
-                        // if request successful, parse response data into tweets
-                        self.tweets = Tweet.parseJSONDataIntoTweets(data)
-                        // once tweets set, reload tableView on main thread
-                        NSOperationQueue.mainQueue().addOperationWithBlock({ () -> Void in
-                            self.tableView.reloadData()
-                        })
-                    case 400...499:
-                        println("Client error")
-                    case 500...599:
-                        println("Server error")
-                    default:
-                        println("Unknown error")
-                    }
-                })
-            }
-        }
     }
 
 }

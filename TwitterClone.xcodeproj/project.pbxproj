@@ -8,6 +8,7 @@
 
 /* Begin PBXBuildFile section */
 		48A5AF1719E482CC00211914 /* TweetCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 48A5AF1619E482CC00211914 /* TweetCell.swift */; };
+		48DECE7419E5B4E000520326 /* TwitterService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 48DECE7319E5B4E000520326 /* TwitterService.swift */; };
 		48F2647419E3133C00B01B5A /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 48F2647319E3133C00B01B5A /* AppDelegate.swift */; };
 		48F2647719E3133C00B01B5A /* TwitterClone.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 48F2647519E3133C00B01B5A /* TwitterClone.xcdatamodeld */; };
 		48F2647C19E3133C00B01B5A /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 48F2647A19E3133C00B01B5A /* Main.storyboard */; };
@@ -31,6 +32,7 @@
 
 /* Begin PBXFileReference section */
 		48A5AF1619E482CC00211914 /* TweetCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TweetCell.swift; sourceTree = "<group>"; };
+		48DECE7319E5B4E000520326 /* TwitterService.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TwitterService.swift; sourceTree = "<group>"; };
 		48F2646E19E3133C00B01B5A /* TwitterClone.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = TwitterClone.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		48F2647219E3133C00B01B5A /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		48F2647319E3133C00B01B5A /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
@@ -126,6 +128,7 @@
 		48F2649619E3136E00B01B5A /* Controller Layer */ = {
 			isa = PBXGroup;
 			children = (
+				48DECE7319E5B4E000520326 /* TwitterService.swift */,
 				48F2649B19E3141400B01B5A /* HomeTimelineViewController.swift */,
 			);
 			name = "Controller Layer";
@@ -254,6 +257,7 @@
 				48A5AF1719E482CC00211914 /* TweetCell.swift in Sources */,
 				48F2647719E3133C00B01B5A /* TwitterClone.xcdatamodeld in Sources */,
 				48F2649E19E3143800B01B5A /* Tweet.swift in Sources */,
+				48DECE7419E5B4E000520326 /* TwitterService.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

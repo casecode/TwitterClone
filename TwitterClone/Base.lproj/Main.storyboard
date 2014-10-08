@@ -18,7 +18,7 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="119" sectionHeaderHeight="22" sectionFooterHeight="22" translatesAutoresizingMaskIntoConstraints="NO" id="cW8-fx-KDd">
-                                <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
+                                <rect key="frame" x="0.0" y="28" width="600" height="572"/>
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                 <prototypes>
                                     <tableViewCell contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="TWEET_CELL" rowHeight="119" id="HXF-os-ndd" customClass="TweetCell" customModule="TwitterClone" customModuleProvider="target">
@@ -64,10 +64,10 @@
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                         <constraints>
-                            <constraint firstAttribute="trailingMargin" secondItem="cW8-fx-KDd" secondAttribute="trailing" constant="-16" id="2N7-KA-nBB"/>
-                            <constraint firstItem="cW8-fx-KDd" firstAttribute="leading" secondItem="LuI-ub-02w" secondAttribute="leadingMargin" constant="-16" id="Rq0-h5-s1D"/>
-                            <constraint firstItem="cW8-fx-KDd" firstAttribute="top" secondItem="LuI-ub-02w" secondAttribute="topMargin" id="VJr-fW-dIk"/>
-                            <constraint firstItem="aLf-FQ-sqo" firstAttribute="top" secondItem="cW8-fx-KDd" secondAttribute="bottom" id="y8N-ym-0iJ"/>
+                            <constraint firstAttribute="trailingMargin" secondItem="cW8-fx-KDd" secondAttribute="trailing" constant="-16" id="BqZ-2L-eul"/>
+                            <constraint firstItem="aLf-FQ-sqo" firstAttribute="top" secondItem="cW8-fx-KDd" secondAttribute="bottom" id="KLn-xl-uQZ"/>
+                            <constraint firstItem="cW8-fx-KDd" firstAttribute="leading" secondItem="LuI-ub-02w" secondAttribute="leadingMargin" constant="-16" id="cck-gj-o1i"/>
+                            <constraint firstItem="cW8-fx-KDd" firstAttribute="top" secondItem="H5A-hJ-fRh" secondAttribute="bottom" constant="8" id="sbL-wE-V8J"/>
                         </constraints>
                     </view>
                     <connections>
