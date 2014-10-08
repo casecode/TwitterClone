@@ -24,7 +24,7 @@ class Tweet {
             self.userProfileImage = UIImage(data: imageData)
         }
     }
-    
+
     class func parseJSONDataIntoTweets(rawJSONData : NSData) -> [Tweet]? {
         var error : NSError?
         if let JSONArray = NSJSONSerialization.JSONObjectWithData(rawJSONData, options: nil, error: &error) as? NSArray {

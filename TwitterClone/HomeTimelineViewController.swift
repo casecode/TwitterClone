@@ -22,6 +22,9 @@ class HomeTimelineViewController: UIViewController, UITableViewDataSource {
     override func viewDidLoad() {
         super.viewDidLoad()
         
+        // Set display options for tableView
+        setTableViewDisplayOptions()
+        
         // Set TwitterService Singleton
         let appDelegate = UIApplication.sharedApplication().delegate as AppDelegate
         self.twitterService = appDelegate.twitterService
@@ -31,6 +34,16 @@ class HomeTimelineViewController: UIViewController, UITableViewDataSource {
 
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
+    }
+    
+    func setTableViewDisplayOptions() {
+        // Self sizing cells
+        tableView.estimatedRowHeight = 100.0
+        tableView.rowHeight = UITableViewAutomaticDimension
+        // Make circular UIImageView for display user profile image
+        let cell = tableView.dequeueReusableCellWithIdentifier("TWEET_CELL") as TweetCell
+//        cell.imageView?.layer.cornerRadius = cell.imageView!.frame.size.width / 2
+//        cell.imageView?.clipsToBounds = true
     }
     
     func fetchHomeTimeline() {
@@ -59,7 +72,7 @@ class HomeTimelineViewController: UIViewController, UITableViewDataSource {
     func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCellWithIdentifier("TWEET_CELL") as TweetCell
         let tweet = self.tweets?[indexPath.row]
-        // configure the cell's text
+        // configure the cell's text and image
         configureTweetCell(cell, withTweet: tweet)
         
         return cell
