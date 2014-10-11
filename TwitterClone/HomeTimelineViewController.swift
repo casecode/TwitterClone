@@ -10,26 +10,34 @@ import UIKit
 import Accounts
 import Social
 
-class HomeTimelineViewController: UIViewController, UITableViewDataSource {
+class HomeTimelineViewController: UIViewController, UITableViewDataSource, UITableViewDelegate {
     
     
     @IBOutlet weak var tableView: UITableView!
     
     var tweets : [Tweet]?
     var twitterAccount: ACAccount?
-    var twitterService: TwitterService!
     
     override func viewDidLoad() {
         super.viewDidLoad()
         
+        // Register TweetCell.xib
+        let tweetCellNib = UINib(nibName: "TweetCell", bundle: NSBundle.mainBundle())
+        self.tableView.registerNib(tweetCellNib!,forCellReuseIdentifier: "TWEET_CELL")
+        
+        // Set this VC as tableView's delegate
+        self.tableView.delegate = self
+        
         // Set display options for tableView
         setTableViewDisplayOptions()
-        
-        // Set TwitterService Singleton
-        let appDelegate = UIApplication.sharedApplication().delegate as AppDelegate
-        self.twitterService = appDelegate.twitterService
+
         // Fetch Tweets from user timeline
         fetchHomeTimeline()
+    }
+    
+    // Refresh cell after view appears to resize auto-sized cells
+    override func viewDidAppear(animated: Bool) {
+        self.tableView.reloadData()
     }
 
     override func didReceiveMemoryWarning() {
@@ -38,16 +46,14 @@ class HomeTimelineViewController: UIViewController, UITableViewDataSource {
     
     func setTableViewDisplayOptions() {
         // Self sizing cells
-        tableView.estimatedRowHeight = 100.0
-        tableView.rowHeight = UITableViewAutomaticDimension
-        // Make circular UIImageView for display user profile image
-        let cell = tableView.dequeueReusableCellWithIdentifier("TWEET_CELL") as TweetCell
-//        cell.imageView?.layer.cornerRadius = cell.imageView!.frame.size.width / 2
-//        cell.imageView?.clipsToBounds = true
+        self.tableView.estimatedRowHeight = 100.0
+        self.tableView.rowHeight = UITableViewAutomaticDimension
     }
     
     func fetchHomeTimeline() {
-        self.twitterService.fetchHomeTimeline { (errorMessage, tweets) -> () in
+        // Fetch Home Timeline using TwitterService singleton
+        let twitterService = TwitterService.sharedInstance
+        twitterService.fetchHomeTimeline { (errorMessage, tweets) -> () in
             if let error = errorMessage {
                 println(error)
             } else {
@@ -73,15 +79,20 @@ class HomeTimelineViewController: UIViewController, UITableViewDataSource {
         let cell = tableView.dequeueReusableCellWithIdentifier("TWEET_CELL") as TweetCell
         let tweet = self.tweets?[indexPath.row]
         // configure the cell's text and image
-        configureTweetCell(cell, withTweet: tweet)
+        if let tweetToConfigure = tweet {
+//            TweetCell.configureTweetCell(cell, atIndexPath: indexPath, withTweet: tweetToConfigure)
+            TweetCell.configureCell(cell, atIndexPath: indexPath, forTableView: self.tableView, withTweet: tweetToConfigure)
+        }
         
         return cell
     }
     
-    // Configure cell's image and text
-    func configureTweetCell(cell: TweetCell, withTweet tweet: Tweet?) {
-        cell.tweet.text = tweet?.text
-        cell.userProfile.image = tweet?.userProfileImage!
+    // Move to SINGLE_TWEET_VC after selecting row
+    func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
+        let tweet = self.tweets?[indexPath.row]
+        let destinationVC = self.storyboard?.instantiateViewControllerWithIdentifier("SINGLE_TWEET_VC") as SingleTweetViewController
+        destinationVC.tweetToDisplay = tweet
+        self.navigationController?.pushViewController(destinationVC, animated: true)
     }
 
 }
