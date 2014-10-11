@@ -7,8 +7,6 @@
 //
 
 import UIKit
-import Accounts
-import Social
 
 class HomeTimelineViewController: UIViewController, UITableViewDataSource, UITableViewDelegate {
     
@@ -16,7 +14,6 @@ class HomeTimelineViewController: UIViewController, UITableViewDataSource, UITab
     @IBOutlet weak var tableView: UITableView!
     
     var tweets : [Tweet]?
-    var twitterAccount: ACAccount?
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -26,12 +23,12 @@ class HomeTimelineViewController: UIViewController, UITableViewDataSource, UITab
         self.tableView.registerNib(tweetCellNib!,forCellReuseIdentifier: "TWEET_CELL")
         
         // Set this VC as tableView's delegate
-        self.tableView.delegate = self
+//        self.tableView.delegate = self
         
         // Set display options for tableView
         setTableViewDisplayOptions()
 
-        // Fetch Tweets from user timeline
+        // Fetch Tweets from home timeline
         fetchHomeTimeline()
     }
     
@@ -51,9 +48,10 @@ class HomeTimelineViewController: UIViewController, UITableViewDataSource, UITab
     }
     
     func fetchHomeTimeline() {
+        let targetURL = "https://api.twitter.com/1.1/statuses/home_timeline.json"
         // Fetch Home Timeline using TwitterService singleton
         let twitterService = TwitterService.sharedInstance
-        twitterService.fetchHomeTimeline { (errorMessage, tweets) -> () in
+        twitterService.fetchTimeline(targetURL: targetURL) { (errorMessage, tweets) -> () in
             if let error = errorMessage {
                 println(error)
             } else {
@@ -80,7 +78,6 @@ class HomeTimelineViewController: UIViewController, UITableViewDataSource, UITab
         let tweet = self.tweets?[indexPath.row]
         // configure the cell's text and image
         if let tweetToConfigure = tweet {
-//            TweetCell.configureTweetCell(cell, atIndexPath: indexPath, withTweet: tweetToConfigure)
             TweetCell.configureCell(cell, atIndexPath: indexPath, forTableView: self.tableView, withTweet: tweetToConfigure)
         }
         

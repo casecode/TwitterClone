@@ -33,18 +33,16 @@ class TweetCell: UITableViewCell {
         cell.tweetLabel.text = tweet.text
         cell.usernameLabel.text = tweet.username
         cell.twitterHandleLabel.text = tweet.userTwitterHandle
-        
-        if let userAvatar = tweet.userAvatarImage {
-            cell.userAvatarView.image = userAvatar
-        } else {
-            let twitterService = TwitterService.sharedInstance
-            twitterService.downloadUserAvatarImageforTweet(tweet, completionHandler: { (error, avatarImage) -> () in
-                if error == nil {
+        // Grab user image for cell
+        let twitterService = TwitterService.sharedInstance
+        twitterService.downloadUserAvatarImageforTweet(tweet, completionHandler: { (error, avatarImage) -> () in
+            if error == nil {
+                NSOperationQueue.mainQueue().addOperationWithBlock({ () -> Void in
                     let cellForImage = tableView.cellForRowAtIndexPath(indexPath) as TweetCell?
                     cellForImage?.userAvatarView.image = avatarImage
-                }
-            })
-        }
+                })
+            }
+        })
     }
 
 }

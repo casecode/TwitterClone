@@ -13,6 +13,7 @@ class Tweet {
     var text: String
     var retweetCount: Int
     var favoriteCount: Int
+    var userID: Int
     var username: String
     var userTwitterHandle: String
     var userAvatarUrl: String
@@ -25,6 +26,7 @@ class Tweet {
         
         // Set user info
         let user = tweetData["user"] as NSDictionary
+        self.userID = user["id"] as Int
         self.username = user["name"] as String
         let screenName = user["screen_name"] as String
         self.userTwitterHandle = "@\(screenName)"

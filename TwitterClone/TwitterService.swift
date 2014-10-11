@@ -26,7 +26,7 @@ class TwitterService {
         return Static.instance
     }
     
-    func fetchHomeTimeline(completionHandler: (errorMessage: String?, tweets: [Tweet]?) -> ()) {
+    func fetchTimeline(#targetURL: String, completionHandler: (errorMessage: String?, tweets: [Tweet]?) -> ()) {
         // Grab Twitter Accounts
         let accountStore = ACAccountStore()
         let accountType = accountStore.accountTypeWithAccountTypeIdentifier(ACAccountTypeIdentifierTwitter)
@@ -40,7 +40,6 @@ class TwitterService {
                 self.twitterAccount = accounts.first as ACAccount?
                 
                 // Set up Twitter GET request
-                let targetURL = "https://api.twitter.com/1.1/statuses/home_timeline.json"
                 let url = NSURL(string: targetURL)
                 let twitterRequest = SLRequest(forServiceType: SLServiceTypeTwitter, requestMethod: SLRequestMethod.GET, URL: url, parameters: nil)
                 // Attach account to request
@@ -96,19 +95,23 @@ class TwitterService {
     func downloadUserAvatarImageforTweet(tweet: Tweet, completionHandler: (error: String?, avatarImage: UIImage?) -> ()) {
         
         self.imageQueue.addOperationWithBlock { () -> Void in
-            let url = NSURL(string: tweet.userAvatarUrl)
-            let imageData = NSData(contentsOfURL: url!)
-            var image: UIImage?, errorMessage: String?
-            if imageData!.length > 0 {
-                image = UIImage(data: imageData!)
-                tweet.userAvatarImage = image
+            var errorMessage: String?, image: UIImage?
+            // If image has already been downloaded, do not download again
+            if let userAvatar = tweet.userAvatarImage {
+                image = userAvatar
             } else {
-                errorMessage = "No image found"
+                let url = NSURL(string: tweet.userAvatarUrl)
+                let imageData = NSData(contentsOfURL: url!)
+                
+                if imageData!.length > 0 {
+                    image = UIImage(data: imageData!)
+                    tweet.userAvatarImage = image
+                } else {
+                    errorMessage = "No image found"
+                }
             }
             
-            NSOperationQueue.mainQueue().addOperationWithBlock({ () -> Void in
-                completionHandler(error: errorMessage, avatarImage: image)
-            })
+            completionHandler(error: errorMessage, avatarImage: image)
         }
     }
     

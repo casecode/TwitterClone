@@ -21,6 +21,7 @@ class SingleTweetViewController: UIViewController {
     
     @IBAction func avatarPressed(sender: AnyObject) {
         let destinationVC = self.storyboard?.instantiateViewControllerWithIdentifier("USER_TIMELINE_VC") as UserTimelineViewController
+        destinationVC.userID = tweetToDisplay!.userID
         self.navigationController?.pushViewController(destinationVC, animated: true)
     }
     
