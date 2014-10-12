@@ -16,7 +16,7 @@ class UserTimelineViewController: UIViewController, UITableViewDataSource, UITab
     var tweets: [Tweet]?
     let userTimelineURL = "https://api.twitter.com/1.1/statuses/user_timeline.json"
     let twitterService = TwitterService.sharedInstance
-    var refreshControl:UIRefreshControl!
+    var refreshControl: UIRefreshControl!
     
 
     @IBOutlet weak var usernameLabel: UILabel!

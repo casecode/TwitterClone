@@ -6,7 +6,7 @@
 //  Copyright (c) 2014 casecode. All rights reserved.
 //
 
-import Foundation
+import UIKit
 import Accounts
 import Social
 
@@ -14,6 +14,7 @@ class TwitterService {
     
     var twitterAccount: ACAccount?
     let imageQueue = NSOperationQueue()
+    var imageCache = [Int : UIImage]()
     
     init() {
         self.imageQueue.maxConcurrentOperationCount = 6
@@ -98,16 +99,33 @@ class TwitterService {
         
         self.imageQueue.addOperationWithBlock { () -> Void in
             var errorMessage: String?, image: UIImage?
-            // If image has already been downloaded, do not download again
-            if let userAvatar = tweet.userAvatarImage {
+            // If tweet already has an image, use that image
+            if let userAvatar = tweet.userAvatarImage
+            {
+                println("Using image from tweet")
+                
                 image = userAvatar
-            } else {
+            }
+            // If tweet user's image already in cache, do not download again
+            else if let userAvatar = self.imageCache[tweet.userID]
+            {
+                println("Using image from image cache")
+                
+                image = userAvatar
+                tweet.userAvatarImage = image
+            }
+            // Otherwise, download image and add it to the tweet and the cache for that user
+            else
+            {
+                println("Downloading image")
+                
                 let url = NSURL(string: tweet.userAvatarUrl)
                 let imageData = NSData(contentsOfURL: url!)
                 
                 if imageData!.length > 0 {
                     image = UIImage(data: imageData!)
                     tweet.userAvatarImage = image
+                    self.imageCache[tweet.userID] = image
                 } else {
                     errorMessage = "No image found"
                 }

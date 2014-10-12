@@ -16,7 +16,7 @@ class HomeTimelineViewController: UIViewController {
     var tweets : [Tweet]?
     let homeTimelineURL = "https://api.twitter.com/1.1/statuses/home_timeline.json"
     let twitterService = TwitterService.sharedInstance
-    var refreshControl:UIRefreshControl!
+    var refreshControl: UIRefreshControl!
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -36,7 +36,6 @@ class HomeTimelineViewController: UIViewController {
         self.refreshControl.attributedTitle = NSAttributedString(string: "Pull to refresh")
         self.refreshControl.addTarget(self, action: "refreshTimeline:", forControlEvents: UIControlEvents.ValueChanged)
         self.tableView.addSubview(self.refreshControl)
-        
     }
     
     // Refresh cell after view appears to resize auto-sized cells
