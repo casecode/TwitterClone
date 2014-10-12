@@ -21,8 +21,8 @@
                                 <rect key="frame" x="0.0" y="64" width="600" height="487"/>
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                 <connections>
-                                    <outlet property="dataSource" destination="UYS-y0-uC6" id="SKc-au-omy"/>
-                                    <outlet property="delegate" destination="UYS-y0-uC6" id="1OH-Qv-ahT"/>
+                                    <outlet property="dataSource" destination="UYS-y0-uC6" id="EiU-kE-JFB"/>
+                                    <outlet property="delegate" destination="UYS-y0-uC6" id="EXf-Cu-UDP"/>
                                 </connections>
                             </tableView>
                         </subviews>
@@ -298,7 +298,7 @@
         <scene sceneID="irW-6A-Cu6">
             <objects>
                 <navigationController automaticallyAdjustsScrollViewInsets="NO" id="1qV-J6-T1Y" sceneMemberID="viewController">
-                    <tabBarItem key="tabBarItem" title="Home" id="Qg5-c8-N7B"/>
+                    <tabBarItem key="tabBarItem" title="Home" image="homeTabIcon.png" id="Qg5-c8-N7B"/>
                     <toolbarItems/>
                     <navigationBar key="navigationBar" contentMode="scaleToFill" id="lTf-UA-X0l">
                         <rect key="frame" x="0.0" y="0.0" width="320" height="44"/>
@@ -317,4 +317,7 @@
             <point key="canvasLocation" x="178" y="135"/>
         </scene>
     </scenes>
+    <resources>
+        <image name="homeTabIcon.png" width="30" height="30"/>
+    </resources>
 </document>

@@ -8,8 +8,8 @@
 
 import UIKit
 
-class HomeTimelineViewController: UIViewController, UITableViewDataSource, UITableViewDelegate {
-    
+//class HomeTimelineViewController: UIViewController, UITableViewDataSource, UITableViewDelegate {
+class HomeTimelineViewController: UIViewController {
     
     @IBOutlet weak var tableView: UITableView!
     
@@ -22,14 +22,12 @@ class HomeTimelineViewController: UIViewController, UITableViewDataSource, UITab
         let tweetCellNib = UINib(nibName: "TweetCell", bundle: NSBundle.mainBundle())
         self.tableView.registerNib(tweetCellNib!,forCellReuseIdentifier: "TWEET_CELL")
         
-        // Set this VC as tableView's delegate
-//        self.tableView.delegate = self
-        
         // Set display options for tableView
         setTableViewDisplayOptions()
 
         // Fetch Tweets from home timeline
         fetchHomeTimeline()
+        
     }
     
     // Refresh cell after view appears to resize auto-sized cells
