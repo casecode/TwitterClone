@@ -65,8 +65,10 @@ class TwitterService {
                     } else {
                         errorMessage = "ERROR: \(error.localizedDescription as String)"
                     }
-                    // Resolve completionHandler
-                    completionHandler(errorMessage: errorMessage, tweets: tweets)
+                    // Resolve completionHandler on main queue
+                    NSOperationQueue.mainQueue().addOperationWithBlock({ () -> Void in
+                        completionHandler(errorMessage: errorMessage, tweets: tweets)
+                    })
                 })
             }
         }
@@ -87,12 +89,12 @@ class TwitterService {
             
             tweets.sort { $0.text < $1.text }
             return tweets
+        } else {
+            return nil
         }
-        // else
-        return nil
     }
     
-    func downloadUserAvatarImageforTweet(tweet: Tweet, completionHandler: (error: String?, avatarImage: UIImage?) -> ()) {
+    func downloadUserAvatarImageforTweet(tweet: Tweet, completionHandler: (errorMessage: String?, avatarImage: UIImage?) -> ()) {
         
         self.imageQueue.addOperationWithBlock { () -> Void in
             var errorMessage: String?, image: UIImage?
@@ -110,8 +112,10 @@ class TwitterService {
                     errorMessage = "No image found"
                 }
             }
-            
-            completionHandler(error: errorMessage, avatarImage: image)
+            // Resolve completion handler on main queue
+            NSOperationQueue.mainQueue().addOperationWithBlock({ () -> Void in
+                completionHandler(errorMessage: errorMessage, avatarImage: image)
+            })
         }
     }
     

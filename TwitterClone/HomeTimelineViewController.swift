@@ -89,9 +89,7 @@ class HomeTimelineViewController: UIViewController {
                     println("\(tweets!.count) new tweets fetched successfully")
                     // Populate tweets and refresh tableView on main thread
                     self.tweets = self.tweets! + tweets!
-                    NSOperationQueue.mainQueue().addOperationWithBlock({ () -> Void in
-                        self.tableView.reloadData()
-                    })
+                    self.tableView.reloadData()
                 }
             }
         }
@@ -112,9 +110,7 @@ class HomeTimelineViewController: UIViewController {
                 println("\(tweets!.count) tweets fetched successfully")
                 // Populate tweets and refresh tableView on main thread
                 self.tweets = tweets!
-                NSOperationQueue.mainQueue().addOperationWithBlock({ () -> Void in
-                    self.tableView.reloadData()
-                })
+                self.tableView.reloadData()
             }
         }
     }
@@ -131,12 +127,10 @@ class HomeTimelineViewController: UIViewController {
                 println("\(tweets!.count) new tweets fetched successfully")
                 // Populate tweets and refresh tableView on main thread
                 self.tweets = tweets! + self.tweets!
-                NSOperationQueue.mainQueue().addOperationWithBlock({ () -> Void in
-                    self.tableView.reloadData()
-                })
+                self.tableView.reloadData()
             }
         }
-        // Ending refresh outside completion block ensures refresh ends regardless of whether request is successful AND that endRefresh called on main thread
+        // End refresh whether request successful or not
         self.refreshControl.endRefreshing()
     }
 
