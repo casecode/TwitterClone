@@ -38,7 +38,7 @@ class TweetCell: UITableViewCell {
         twitterService.downloadUserAvatarImageforTweet(tweet, completionHandler: { (errorMessage, avatarImage) -> () in
             if let error = errorMessage {
                 println(error)
-            } else
+            } else {
                 let cellForImage = tableView.cellForRowAtIndexPath(indexPath) as TweetCell?
                 cellForImage?.userAvatarView.image = avatarImage
             }
