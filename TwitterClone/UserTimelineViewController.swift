@@ -81,6 +81,28 @@ class UserTimelineViewController: UIViewController, UITableViewDataSource, UITab
         return cell
     }
     
+    // Infinite Scrolling
+    func tableView(tableView: UITableView, willDisplayCell cell: UITableViewCell, forRowAtIndexPath indexPath: NSIndexPath) {
+        let oldestTweetIndex = self.tweets!.count - 1
+        if indexPath.row == oldestTweetIndex {
+            let oldestTweet = self.tweets![oldestTweetIndex]
+            let targetURL = self.userTimelineURL + "?user_id=" + self.userID.description + "&max_id=" + oldestTweet.id.description
+            
+            self.twitterService.fetchTimeline(targetURL: targetURL) { (errorMessage, tweets) -> () in
+                if let error = errorMessage {
+                    println(error)
+                } else {
+                    println("\(tweets!.count) new tweets fetched successfully")
+                    // Populate tweets and refresh tableView on main thread
+                    self.tweets = self.tweets! + tweets!
+                    NSOperationQueue.mainQueue().addOperationWithBlock({ () -> Void in
+                        self.tableView.reloadData()
+                    })
+                }
+            }
+        }
+    }
+    
     // Move to SINGLE_TWEET_VC after selecting row
     func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
         let tweet = self.tweets?[indexPath.row]

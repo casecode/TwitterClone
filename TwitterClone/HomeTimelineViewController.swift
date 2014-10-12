@@ -75,6 +75,28 @@ class HomeTimelineViewController: UIViewController {
         self.navigationController?.pushViewController(destinationVC, animated: true)
     }
     
+    // Infinite Scrolling
+    func tableView(tableView: UITableView, willDisplayCell cell: UITableViewCell, forRowAtIndexPath indexPath: NSIndexPath) {
+        let oldestTweetIndex = self.tweets!.count - 1
+        if indexPath.row == oldestTweetIndex {
+            let oldestTweet = self.tweets![oldestTweetIndex]
+            let targetURL = self.homeTimelineURL + "?max_id=" + oldestTweet.id.description
+            
+            self.twitterService.fetchTimeline(targetURL: targetURL) { (errorMessage, tweets) -> () in
+                if let error = errorMessage {
+                    println(error)
+                } else {
+                    println("\(tweets!.count) new tweets fetched successfully")
+                    // Populate tweets and refresh tableView on main thread
+                    self.tweets = self.tweets! + tweets!
+                    NSOperationQueue.mainQueue().addOperationWithBlock({ () -> Void in
+                        self.tableView.reloadData()
+                    })
+                }
+            }
+        }
+    }
+    
     func setTableViewDisplayOptions() {
         // Self sizing cells
         self.tableView.estimatedRowHeight = 100.0
