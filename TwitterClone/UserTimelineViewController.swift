@@ -10,15 +10,33 @@ import UIKit
 
 class UserTimelineViewController: UIViewController, UITableViewDataSource, UITableViewDelegate {
     
+    // Use tweetPassedFromSingleTweetVC to configure Header View and identify user
+    var tweetPassedFromSingleTweetVC: Tweet?
     var userID: Int = 0
     var tweets: [Tweet]?
     
+
+    @IBOutlet weak var usernameLabel: UILabel!
+    @IBOutlet weak var twitterHandleLabel: UILabel!
+    @IBOutlet weak var userAvatarView: UIImageView!
     @IBOutlet weak var tableView: UITableView!
     
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        println("Hello: \(self.userID)")
+        // Configure header view and set userID
+        // IF tweet passed from SingleTweetVC and already had image, okay to force unwrap
+        self.userID = tweetPassedFromSingleTweetVC!.userID
+        self.usernameLabel.text = tweetPassedFromSingleTweetVC!.username
+        self.twitterHandleLabel.text = tweetPassedFromSingleTweetVC!.userTwitterHandle
+        self.userAvatarView.image = tweetPassedFromSingleTweetVC!.userAvatarImage!
+        
+        // Apply rounded corners and border to image
+        self.userAvatarView.layer.cornerRadius = 8.0
+        self.userAvatarView.clipsToBounds = true
+        self.userAvatarView.layer.borderWidth = 3.0
+        self.userAvatarView.layer.borderColor = UIColor.whiteColor().CGColor
+        
         // Register TweetCell.xib
         let tweetCellNib = UINib(nibName: "TweetCell", bundle: NSBundle.mainBundle())
         self.tableView.registerNib(tweetCellNib!,forCellReuseIdentifier: "TWEET_CELL")
