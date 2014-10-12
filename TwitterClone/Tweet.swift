@@ -10,6 +10,7 @@ import UIKit
 
 class Tweet {
     
+    var id: Int
     var text: String
     var retweetCount: Int
     var favoriteCount: Int
@@ -20,6 +21,7 @@ class Tweet {
     var userAvatarImage: UIImage?
     
     init(tweetData : NSDictionary) {
+        self.id = tweetData["id"] as Int
         self.text = tweetData["text"] as String
         self.retweetCount = tweetData["retweet_count"] as Int
         self.favoriteCount = tweetData["favorite_count"] as Int

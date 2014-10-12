@@ -14,6 +14,9 @@ class HomeTimelineViewController: UIViewController {
     @IBOutlet weak var tableView: UITableView!
     
     var tweets : [Tweet]?
+    let homeTimelineURL = "https://api.twitter.com/1.1/statuses/home_timeline.json"
+    let twitterService = TwitterService.sharedInstance
+    var refreshControl:UIRefreshControl!
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -28,6 +31,12 @@ class HomeTimelineViewController: UIViewController {
         // Fetch Tweets from home timeline
         fetchHomeTimeline()
         
+        // Pull to refresh
+        self.refreshControl = UIRefreshControl()
+        self.refreshControl.attributedTitle = NSAttributedString(string: "Pull to refresh")
+        self.refreshControl.addTarget(self, action: "refreshTimeline:", forControlEvents: UIControlEvents.ValueChanged)
+        self.tableView.addSubview(self.refreshControl)
+        
     }
     
     // Refresh cell after view appears to resize auto-sized cells
@@ -37,30 +46,6 @@ class HomeTimelineViewController: UIViewController {
 
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
-    }
-    
-    func setTableViewDisplayOptions() {
-        // Self sizing cells
-        self.tableView.estimatedRowHeight = 100.0
-        self.tableView.rowHeight = UITableViewAutomaticDimension
-    }
-    
-    func fetchHomeTimeline() {
-        let targetURL = "https://api.twitter.com/1.1/statuses/home_timeline.json"
-        // Fetch Home Timeline using TwitterService singleton
-        let twitterService = TwitterService.sharedInstance
-        twitterService.fetchTimeline(targetURL: targetURL) { (errorMessage, tweets) -> () in
-            if let error = errorMessage {
-                println(error)
-            } else {
-                println("\(tweets!.count) tweets fetched successfully")
-                // Populate tweets and refresh tableView on main thread
-                self.tweets = tweets!
-                NSOperationQueue.mainQueue().addOperationWithBlock({ () -> Void in
-                    self.tableView.reloadData()
-                })
-            }
-        }
     }
     
     func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
@@ -88,6 +73,49 @@ class HomeTimelineViewController: UIViewController {
         let destinationVC = self.storyboard?.instantiateViewControllerWithIdentifier("SINGLE_TWEET_VC") as SingleTweetViewController
         destinationVC.tweetToDisplay = tweet
         self.navigationController?.pushViewController(destinationVC, animated: true)
+    }
+    
+    func setTableViewDisplayOptions() {
+        // Self sizing cells
+        self.tableView.estimatedRowHeight = 100.0
+        self.tableView.rowHeight = UITableViewAutomaticDimension
+    }
+    
+    func fetchHomeTimeline() {
+        // Fetch Home Timeline using TwitterService singleton
+        self.twitterService.fetchTimeline(targetURL: self.homeTimelineURL) { (errorMessage, tweets) -> () in
+            if let error = errorMessage {
+                println(error)
+            } else {
+                println("\(tweets!.count) tweets fetched successfully")
+                // Populate tweets and refresh tableView on main thread
+                self.tweets = tweets!
+                NSOperationQueue.mainQueue().addOperationWithBlock({ () -> Void in
+                    self.tableView.reloadData()
+                })
+            }
+        }
+    }
+    
+    func refreshTimeline(sender: AnyObject!) {
+        println("Starting Pull To Refresh")
+        let mostRecentTweet = self.tweets![0]
+        let targetURL = self.homeTimelineURL + "?since_id=" + mostRecentTweet.id.description
+        
+        self.twitterService.fetchTimeline(targetURL: targetURL) { (errorMessage, tweets) -> () in
+            if let error = errorMessage {
+                println(error)
+            } else {
+                println("\(tweets!.count) new tweets fetched successfully")
+                // Populate tweets and refresh tableView on main thread
+                self.tweets = tweets! + self.tweets!
+                NSOperationQueue.mainQueue().addOperationWithBlock({ () -> Void in
+                    self.tableView.reloadData()
+                })
+            }
+        }
+        // Ending refresh outside completion block ensures refresh ends regardless of whether request is successful AND that endRefresh called on main thread
+        self.refreshControl.endRefreshing()
     }
 
 }
