@@ -8,8 +8,7 @@
 
 import UIKit
 
-//class HomeTimelineViewController: UIViewController, UITableViewDataSource, UITableViewDelegate {
-class HomeTimelineViewController: UIViewController {
+class HomeTimelineViewController: UIViewController, UITableViewDataSource, UITableViewDelegate {
     
     @IBOutlet weak var tableView: UITableView!
     
